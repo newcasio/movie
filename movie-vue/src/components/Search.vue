@@ -1,21 +1,37 @@
 <template>
-  <form action>
-    <label for="searchField">Search:</label>
-    <input type="text" npm dv-model="searchString" id="searchField">
+  <div>
+    <form>
+      <label for="searchField">Search:</label>
+      <input type="text" npm v-model="searchString" id="searchField">
+    </form>
     <button @click="searchDb">Submit</button>
-  </form>
+    <!-- <p>{{info}}</p> -->
+    <ul v-for="movie in info" :key="movie.id">
+      <li>
+        <h3>{{movie.original_title}}</h3>
+        <p>Overview: {{movie.overview}}</p>
+        <p>Viewer rating: {{movie.vote_average}}</p>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
-      searchString: ""
+      searchString: "",
+      info: null
     };
   },
   methods: {
     searchDb() {
-      console.log(this.searchString);
+      let searchURL = `https://api.themoviedb.org/3/search/movie?api_key=***KEY***&query=${
+        this.searchString
+      }&page=1`;
+      axios.get(searchURL).then(res => (this.info = res.data.results));
     }
   }
 };
