@@ -35,10 +35,11 @@ export default {
   },
   methods: {
     searchDb() {
+      console.log(process.env.MOVIE_API_KEY);
       this.nextPage = true;
-      let searchURL = `https://api.themoviedb.org/3/search/movie?api_key=*****INSERT_KEY*****&query=${
-        this.searchString
-      }&page=${this.resultsPage}`;
+      let searchURL = `https://api.themoviedb.org/3/search/movie?api_key=${
+        process.env.MOVIE_DB_API_KEY
+      }&query=${this.searchString}&page=${this.resultsPage}`;
       axios.get(searchURL).then(res => {
         this.info = res.data;
         this.listOfMovies = res.data.results;
